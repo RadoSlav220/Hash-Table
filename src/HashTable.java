@@ -7,8 +7,8 @@ public interface HashTable {
     int size();
 
     /**
-     * @implSpec Returns size() == 0
      * @return true if this map contains no elements
+     * @implSpec Returns size() == 0
      */
     boolean empty();
 
@@ -20,6 +20,7 @@ public interface HashTable {
 
     /**
      * Exchanges the contents of two hash tables. Performs a simple exchange of references/pointers.
+     *
      * @param other the hash table with which to exchange the contents
      * @throws IllegalArgumentException if the argument is null
      */
@@ -27,6 +28,7 @@ public interface HashTable {
 
     /**
      * Ensures that this hash table contains the specified value.
+     *
      * @param value element whose presence in this hash table is to be ensured
      * @return true if this hash table changed as a result of the call
      */
@@ -34,20 +36,19 @@ public interface HashTable {
 
     /**
      * Ensures that this hash table doesn't contain the specified value/
+     *
      * @param value element to be removed from this hash table, if present
      * @return true if this hash table changed as a result of the call
      */
     boolean remove(int value);
 
     /**
-     *
      * @param value element whose presence in this hash table is to be tested
      * @return true if this hash table contains the specified element
      */
     boolean contains(int value);
 
     /**
-     *
      * @return Returns an iterator over the elements contained in this hash table
      */
     Iterator<Integer> iterator();
