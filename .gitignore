@@ -10,11 +10,16 @@ local.properties
 .loadpath
 .recommenders
 
+.classpath
+.project
+*.userlibraries
+
 # Compiled class file
 *.class
 
 .idea/*
 *.iml
+*.eml
 
 # Log file
 *.log
