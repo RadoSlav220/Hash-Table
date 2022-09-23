@@ -14,7 +14,7 @@ local.properties
 *.class
 
 .idea/*
-
+*.iml
 
 # Log file
 *.log
