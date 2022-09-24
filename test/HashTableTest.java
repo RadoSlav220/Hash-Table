@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class HashTableTest<T extends HashTable> {
+abstract class HashTableTest<T extends AbstractHashTable> {
     private T table;
 
     protected abstract T createTable();

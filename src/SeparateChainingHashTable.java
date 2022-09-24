@@ -1,28 +1,53 @@
 import java.util.Iterator;
+import java.util.function.Function;
 
-public class SeparateChainingHashTable implements HashTable {
+public class SeparateChainingHashTable extends AbstractHashTable {
 
-    @Override
-    public int size() { throw new UnsupportedOperationException("not implemented"); }
+    public SeparateChainingHashTable() {
+        throw new UnsupportedOperationException("not implemented");
+    }
 
-    @Override
-    public boolean empty() { throw new UnsupportedOperationException("not implemented");}
-
-    @Override
-    public void clear() { throw new UnsupportedOperationException("not implemented"); }
-
-    @Override
-    public void swap(HashTable other) { throw new UnsupportedOperationException("not implemented"); }
+    public SeparateChainingHashTable(Function<Integer, Integer> hashFunction) {
+        throw new UnsupportedOperationException("not implemented");
+    }
 
     @Override
-    public boolean add(int value) { throw new UnsupportedOperationException("not implemented"); }
+    public int size() {
+        throw new UnsupportedOperationException("not implemented");
+    }
 
     @Override
-    public boolean remove(int value) { throw new UnsupportedOperationException("not implemented"); }
+    public boolean empty() {
+        throw new UnsupportedOperationException("not implemented");
+    }
 
     @Override
-    public boolean contains(int value) { throw new UnsupportedOperationException("not implemented"); }
+    public void clear() {
+        throw new UnsupportedOperationException("not implemented");
+    }
 
     @Override
-    public Iterator<Integer> iterator() { throw new UnsupportedOperationException("not implemented"); }
+    public void swap(HashTable other) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public boolean add(int value) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public boolean remove(int value) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public boolean contains(int value) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        throw new UnsupportedOperationException("not implemented");
+    }
 }
