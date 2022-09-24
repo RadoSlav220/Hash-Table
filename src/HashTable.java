@@ -52,5 +52,4 @@ public interface HashTable {
      * @return Returns an iterator over the elements contained in this hash table
      */
     Iterator<Integer> iterator();
-
 }
