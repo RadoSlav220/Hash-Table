@@ -14,4 +14,14 @@ public abstract class AbstractHashTable implements HashTable {
         hash = hashFunction;
     }
 
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean empty() {
+        return size == 0;
+    }
+
 }

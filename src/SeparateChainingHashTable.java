@@ -11,16 +11,6 @@ public class SeparateChainingHashTable extends AbstractHashTable {
     }
 
     @Override
-    public int size() {
-        throw new UnsupportedOperationException("not implemented");
-    }
-
-    @Override
-    public boolean empty() {
-        throw new UnsupportedOperationException("not implemented");
-    }
-
-    @Override
     public void clear() {
         throw new UnsupportedOperationException("not implemented");
     }
