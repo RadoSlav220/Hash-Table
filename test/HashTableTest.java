@@ -6,7 +6,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class HashTableTest<T extends AbstractHashTable> {
-    private T table;
+    protected T table;
 
     protected abstract T createTable();
 
@@ -101,6 +101,54 @@ abstract class HashTableTest<T extends AbstractHashTable> {
         for (int i = 0; i < 3; i++) {
             assertTrue(table.contains(i), "The table should contained the inserted element: " + i);
         }
+    }
+
+    @Test
+    void add_ValueNotInTable_ValueAdded() {
+        //Act
+        boolean hasChanged = table.add(3);
+
+        //Assert
+        assertTrue(hasChanged);
+        assertEquals(1, table.size());
+        assertTrue(table.contains(3));
+    }
+
+    @Test
+    void add_ValueInTable_NoChange() {
+        //Arrange
+        table.add(3);
+
+        //Act
+        boolean hasChanged = table.add(3);
+
+        //Assert
+        assertFalse(hasChanged);
+        assertEquals(1, table.size());
+    }
+
+    @Test
+    void remove_ValueInTable_ValueRemoved() {
+        //Arrange
+        table.add(3);
+
+        //Act
+        boolean hasChanged = table.remove(3);
+
+        //Assert
+        assertTrue(hasChanged);
+        assertFalse(table.contains(3));
+        assertTrue(table.empty());
+    }
+
+    @Test
+    void remove_ValueNotInTable_NoChange() {
+        //Act
+        boolean hasChanged = table.remove(3);
+
+        //Assert
+        assertFalse(hasChanged);
+        assertTrue(table.empty());
     }
 
 }
