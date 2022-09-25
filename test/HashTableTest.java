@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Function;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class HashTableTest<T extends AbstractHashTable> {
@@ -8,9 +10,23 @@ abstract class HashTableTest<T extends AbstractHashTable> {
 
     protected abstract T createTable();
 
+    protected abstract T createTable(Function<Integer, Integer> hashFunction);
+
     @BeforeEach
     public void setUp() {
         table = createTable();
+    }
+
+    @Test
+    void constructor_whenCreated_hashTableHasZeroSize() {
+        assertEquals(0, table.size(),
+                "HashTable created with default constructor should have zero size!");
+    }
+
+    @Test
+    void constructorTakingFunction_whenCreated_hashTableHasZeroSize() {
+        assertEquals(0, (createTable(HashFunctions::customHash)).size(),
+                "HashTable created with constructor taking a function should have zero size!");
     }
 
     @Test
