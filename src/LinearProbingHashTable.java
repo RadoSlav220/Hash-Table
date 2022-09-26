@@ -1,13 +1,23 @@
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
 
 public class LinearProbingHashTable extends AbstractHashTable {
+    /**
+     * When an instance is created it has the following default capacity
+     */
+    public static int DEFAULT_CAPACITY = 16;
+    public static double LOAD_FACTOR = 0.75;
+    private List<Node> table;
+
     public LinearProbingHashTable() {
-        throw new UnsupportedOperationException("not implemented");
+        table = new ArrayList<>(DEFAULT_CAPACITY);
     }
 
     public LinearProbingHashTable(Function<Integer, Integer> hashFunction) {
-        throw new UnsupportedOperationException("not implemented");
+        super(hashFunction);
+        table = new ArrayList<>(DEFAULT_CAPACITY);
     }
 
     @Override
@@ -62,6 +72,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
         /**
          * Sets the held value to the passed one
          * Sets isDeleted to false
+         *
          * @param value the value to which the node is set
          */
         public void reset(int value) {
