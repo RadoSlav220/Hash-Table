@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -125,6 +128,21 @@ abstract class HashTableTest<T extends AbstractHashTable> {
         //Assert
         assertFalse(hasChanged);
         assertEquals(1, table.size());
+    }
+
+    @Test
+    void add_MillionRandomNumbers_AllNumbersInHashTable() {
+        Set<Integer> numbers = new HashSet<>();
+        Random random = new Random();
+        for (int i = 0; i < 1000000; ++i) {
+            int num = random.nextInt();
+            numbers.add(num);
+            table.add(num);
+        }
+
+        for (Integer i : numbers) {
+            assertTrue(table.contains(i));
+        }
     }
 
     @Test

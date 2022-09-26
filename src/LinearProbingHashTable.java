@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.Function;
 
 public class LinearProbingHashTable extends AbstractHashTable {
@@ -8,16 +6,17 @@ public class LinearProbingHashTable extends AbstractHashTable {
      * When an instance is created it has the following default capacity
      */
     public static int DEFAULT_CAPACITY = 16;
-    public static double LOAD_FACTOR = 0.75;
-    private List<Node> table;
+    public static double MAX_LOAD_FACTOR = 0.5;
+    private Node[] table;
 
     public LinearProbingHashTable() {
-        table = new ArrayList<>(DEFAULT_CAPACITY);
+        table = new Node[DEFAULT_CAPACITY];
+        hash = HashFunctions::FNVhash;
     }
 
     public LinearProbingHashTable(Function<Integer, Integer> hashFunction) {
         super(hashFunction);
-        table = new ArrayList<>(DEFAULT_CAPACITY);
+        table = new Node[DEFAULT_CAPACITY];
     }
 
     @Override
@@ -32,7 +31,35 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public boolean add(int value) {
-        throw new UnsupportedOperationException("not implemented");
+        if (contains(value)) {
+            return false;
+        }
+
+        int index = getIndex(value);
+        while (table[index] != null && !table[index].isRemoved()) {
+            index = nextIndex(index);
+        }
+        table[index] = new Node(value);
+        ++size;
+
+        if (checkResize()) {
+            resize(table.length * 2);
+        }
+        return true;
+    }
+
+    private boolean checkResize() {
+        return ((double)size / table.length) >= MAX_LOAD_FACTOR;
+    }
+
+    private void resize(int newCapacity) {
+        Node[] oldTable = table;
+        table = new Node[newCapacity];
+        for (Node node : oldTable) {
+            if (node != null && !node.isRemoved()) {
+                add(node.getValue());
+            }
+        }
     }
 
     @Override
@@ -42,7 +69,22 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public boolean contains(int value) {
-        throw new UnsupportedOperationException("not implemented");
+        int index = getIndex(value);
+        while (table[index] != null) {
+            if (!table[index].isRemoved() && table[index].getValue() == value) {
+                return true;
+            }
+            index = nextIndex(index);
+        }
+        return false;
+    }
+
+    private int getIndex(int value) {
+        return hash.apply(value) % table.length;
+    }
+
+    private int nextIndex(int index) {
+        return (index + 1) % table.length;
     }
 
     @Override
