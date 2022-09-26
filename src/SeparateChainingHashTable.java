@@ -1,18 +1,41 @@
 import java.util.Iterator;
 import java.util.function.Function;
+import java.util.LinkedList;
 
 public class SeparateChainingHashTable extends AbstractHashTable {
-    public SeparateChainingHashTable() {
-        throw new UnsupportedOperationException("not implemented");
+    
+	public static int DEFAULT_CAPACITY = 16;
+	public static double MAX_LOAD_FACTOR = 0.75;
+    public static double MIN_LOAD_FACTOR = 0.125;
+    
+	private LinkedList<Integer>[] table;
+	private int size;
+	
+	@SuppressWarnings("unchecked")
+	public SeparateChainingHashTable() {
+		table = (LinkedList<Integer>[]) new Object[DEFAULT_CAPACITY];
+		hash = HashFunctions::FNVhash;
     }
 
-    public SeparateChainingHashTable(Function<Integer, Integer> hashFunction) {
-        throw new UnsupportedOperationException("not implemented");
+	@SuppressWarnings("unchecked")
+	public SeparateChainingHashTable(Function<Integer, Integer> hashFunction) {
+        super(hashFunction);
+        table = (LinkedList<Integer>[]) new Object[DEFAULT_CAPACITY];
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void clear() {
-        throw new UnsupportedOperationException("not implemented");
+    	LinkedList<Integer>[] temp;
+    	try {
+    		temp = (LinkedList<Integer>[]) new Object[table.length];
+    		table = temp;
+    	} catch (OutOfMemoryError e) {
+    		for (int i=0; i<table.length; ++i) {
+    			table[i] = null;
+    		}
+    	}
+    	size = 0;
     }
 
     @Override
@@ -32,11 +55,33 @@ public class SeparateChainingHashTable extends AbstractHashTable {
 
     @Override
     public boolean contains(int value) {
-        throw new UnsupportedOperationException("not implemented");
+    	LinkedList<Integer> bucket = table[hash.apply(value) % table.length];
+    	for (int i : bucket) {
+    		if (i == value) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     @Override
     public Iterator<Integer> iterator() {
         throw new UnsupportedOperationException("not implemented");
+    }
+    
+    @SuppressWarnings("unchecked")
+	private void resize(int newCapacity) {
+    	LinkedList<Integer>[] newTable = (LinkedList<Integer>[]) new Object[newCapacity];
+    	//for (int i : this) {
+    	//	
+    	//}
+    }
+    
+    private boolean checkResize() {
+    	return (double) size / table.length >= MAX_LOAD_FACTOR;
+    }
+    
+    private boolean checkShrink() {
+        return ((double)size / table.length) <= MIN_LOAD_FACTOR;
     }
 }
