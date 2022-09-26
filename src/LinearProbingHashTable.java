@@ -7,6 +7,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
      */
     public static int DEFAULT_CAPACITY = 16;
     public static double MAX_LOAD_FACTOR = 0.5;
+    public static double MIN_LOAD_FACTOR = 0.125;
     private Node[] table;
 
     public LinearProbingHashTable() {
@@ -55,6 +56,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
     private void resize(int newCapacity) {
         Node[] oldTable = table;
         table = new Node[newCapacity];
+        size = 0;
         for (Node node : oldTable) {
             if (node != null && !node.isRemoved()) {
                 add(node.getValue());
@@ -64,7 +66,29 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public boolean remove(int value) {
-        throw new UnsupportedOperationException("not implemented");
+        if (!contains(value)) {
+            return false;
+        }
+
+        int index = getIndex(value);
+        while (table[index] != null) {
+            if (table[index].getValue() == value) {
+                table[index].remove();
+                --size;
+                if (checkShrink()) {
+                    resize(table.length / 2);
+                }
+                return true;
+            }
+            index = nextIndex(index);
+        }
+
+        //shouldn't reach here
+        return false;
+    }
+
+    private boolean checkShrink() {
+        return ((double)size / table.length) <= MIN_LOAD_FACTOR;
     }
 
     @Override

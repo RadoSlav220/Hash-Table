@@ -132,14 +132,19 @@ abstract class HashTableTest<T extends AbstractHashTable> {
 
     @Test
     void add_MillionRandomNumbers_AllNumbersInHashTable() {
+        //Arrange
         Set<Integer> numbers = new HashSet<>();
         Random random = new Random();
-        for (int i = 0; i < 1000000; ++i) {
+
+        //Act
+        while(numbers.size() < 1000000) {
             int num = random.nextInt();
             numbers.add(num);
             table.add(num);
         }
 
+        //Assert
+        assertEquals(1000000, table.size());
         for (Integer i : numbers) {
             assertTrue(table.contains(i));
         }
@@ -167,6 +172,26 @@ abstract class HashTableTest<T extends AbstractHashTable> {
         //Assert
         assertFalse(hasChanged);
         assertTrue(table.empty());
+    }
+
+    @Test
+    void remove_AddMillionNumbersRemoveOddNumbers_TableContainsOnlyEvenNumbers() {
+        //Arrange
+        for (int i = 0; i < 1000000; ++i) {
+            table.add(i);
+        }
+
+        //Act
+        for (int i = 1; i < 1000000; i += 2) {
+            table.remove(i);
+        }
+
+        //Assert
+        assertEquals(500000, table.size());
+        for (int i = 0; i < 1000000; ++i) {
+            boolean isEven = i % 2 == 0;
+            assertEquals(isEven, table.contains(i));
+        }
     }
 
 }
