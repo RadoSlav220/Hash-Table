@@ -213,10 +213,21 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     }
     
     @Test
+    void iteratorRemove_CallRemoveWithoutCallingNext_ExceptionIsThrown() {
+    	//Arrange
+    	fill (1, 5, 1);
+    	Iterator<Integer> it = table.iterator();
+    	
+    	//Act, Assert
+    	assertThrows(IllegalStateException.class, () -> it.remove(), "Without calling next, the iterator must not be able to remove anything.");
+    }
+    
+    @Test
     void iteratorRemove_RemoveANumber_SizeIsDecreased() {
     	//Arrange
     	fill (1, 5, 1);
     	Iterator<Integer> it = table.iterator();
+    	it.next();
     	
     	//Act
     	it.remove();
@@ -230,7 +241,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     	//Arrange
     	fill (1, 5, 1);
     	Iterator<Integer> it = table.iterator();
-    	for (int i=0; i<4; ++i) {
+    	for (int i=0; i<5; ++i) {
     		it.next();
     	}
     	
@@ -243,10 +254,11 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     	//Arrange
     	fill (1, 5, 1);
     	Iterator<Integer> it = table.iterator();
+    	it.next();
     	
     	//Act, Assert
-    	for (int i=0; i<3; ++i) {
-    		assertTrue(it.hasNext());
+    	for (int i=0; i<4; ++i) {
+    		assertTrue(it.hasNext(), "There must be next!");
     		it.next();
     	}
     }
@@ -256,7 +268,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     	//Arrange
     	fill (1, 5, 1);
     	Iterator<Integer> it = table.iterator();
-    	for (int i=0; i<3; ++i) {
+    	for (int i=0; i<5; ++i) {
     		it.next();
     	}
     	
