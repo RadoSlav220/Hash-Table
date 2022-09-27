@@ -28,6 +28,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
     @Override
     public void clear() {
         table = new Node[DEFAULT_CAPACITY];
+        modCount = 0;
         size = 0;
     }
 
@@ -222,7 +223,6 @@ public class LinearProbingHashTable extends AbstractHashTable {
         }
     }
 
-
     private class LPHashIterator implements Iterator<Integer> {
         int elementsBeforeIndex;
         int index;
@@ -346,7 +346,6 @@ public class LinearProbingHashTable extends AbstractHashTable {
             }
         }
     }
-
 
     private class LPHashReverseIterator implements ReverseIterator {
         int elementsBeforeIndex;
