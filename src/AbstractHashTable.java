@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.function.Function;
 
 public abstract class AbstractHashTable implements HashTable {
@@ -18,6 +19,14 @@ public abstract class AbstractHashTable implements HashTable {
     public AbstractHashTable(Function<Integer, Integer> hashFunction) {
         size = 0;
         hash = hashFunction;
+    }
+
+    public AbstractHashTable(Collection<Integer> values) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    public AbstractHashTable(Collection<Integer> values, Function<Integer, Integer> hashFunction) {
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
