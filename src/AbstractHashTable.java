@@ -1,7 +1,9 @@
 import java.util.function.Function;
 
 public abstract class AbstractHashTable implements HashTable {
-    protected int size;
+	public static final int RESIZE_FACTOR = 2;
+	public static final int DEFAULT_CAPACITY = 16;
+	protected int size;
     protected Function<Integer, Integer> hash;
 
     public AbstractHashTable() {

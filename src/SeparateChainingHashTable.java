@@ -4,9 +4,8 @@ import java.util.LinkedList;
 
 public class SeparateChainingHashTable extends AbstractHashTable implements Iterable {
     
-	public static int DEFAULT_CAPACITY = 16;
 	public static double MAX_LOAD_FACTOR = 0.75;
-    public static double MIN_LOAD_FACTOR = 0.125;
+    public static double MIN_LOAD_FACTOR = 0.25;
     
 	private LinkedList<Integer>[] table;
 	private int size;
@@ -48,20 +47,40 @@ public class SeparateChainingHashTable extends AbstractHashTable implements Iter
     		int tempSize = ((SeparateChainingHashTable) other).size;
     		this.size = tempSize;
     		((SeparateChainingHashTable) other).size = tempSize;
+    		
+    		Function<Integer, Integer> tempHash = this.hash;
+    		this.hash = ((SeparateChainingHashTable) other).hash;
+    		((SeparateChainingHashTable) other).hash = tempHash;
     	}
     	else {
-    		//iterate
+    		//to be written
     	}
     }
 
     @Override
     public boolean add(int value) {
-        throw new UnsupportedOperationException("not implemented");
+        if (this.contains(value)) {
+        	return false;
+        }
+        table[hash.apply(value) % table.length].add(value);
+        ++size;
+        if (checkResize()) {
+        	resize(table.length * RESIZE_FACTOR);
+        }
+        return true;
     }
 
     @Override
     public boolean remove(int value) {
-        throw new UnsupportedOperationException("not implemented");
+    	if (this.contains(value)) {
+        	return false;
+        }
+    	table[hash.apply(value) % table.length].remove(value);
+    	--size;
+    	if (checkShrink()) {
+    		resize(table.length / RESIZE_FACTOR);
+    	}
+    	return true;
     }
 
     @Override
