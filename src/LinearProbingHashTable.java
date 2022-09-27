@@ -65,29 +65,28 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public boolean remove(int value) {
-        if (!contains(value)) {
-            return false;
-        }
-
         int index = getIndex(value);
         while (table[index] != null) {
             if (table[index].getValue() == value) {
-                table[index].remove();
-                --size;
-                if (checkShrink()) {
-                    resize(table.length / 2);
-                }
+                removeValue(index);
                 return true;
             }
             index = nextIndex(index);
         }
 
-        //shouldn't reach here
         return false;
     }
 
     private boolean checkShrink() {
         return ((double)size / table.length) <= MIN_LOAD_FACTOR;
+    }
+
+    private void removeValue(int index) {
+        table[index].remove();
+        --size;
+        if (checkShrink()) {
+            resize(table.length / 2);
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ class HashFunctionsTest {
 	void customHash_DifferentElements_ShouldHaveDifferentHashes() {
 		assertNotEquals(HashFunctions.customHash(100), HashFunctions.customHash(0));
 	}
-	
+
 	@Test
 	void FNVhash_EqualElements_ShouldHaveSameHash() {
 		assertEquals(HashFunctions.FNVhash(12), HashFunctions.FNVhash(12));		
