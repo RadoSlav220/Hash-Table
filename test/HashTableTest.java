@@ -195,21 +195,23 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     
     @Test
     void iterator_AddNumbers_IteratorGoesThroughAllOfThem() {
-    	//Arrange
-    	HashSet<Integer> stdHash = new HashSet<Integer>();
-    	int[] numbers = {1, 2, 3, 4, 5};
-    	for (int i=0; i<numbers.length; ++i) {
-    		stdHash.add(numbers[i]);
-    		table.add(numbers[i]);    		
-    	}
-    	
-    	//Act
-    	for (int i : table) {
-    		stdHash.remove(i);
-    	}
-    	
-    	//Assert
-    	assertTrue(stdHash.isEmpty());
+        //Arrange
+        HashSet<Integer> stdHash = new HashSet<Integer>();
+        int[] numbers = {1, 2, 3, 4, 5, 3};
+
+        for (int i=0; i<numbers.length; ++i) {
+            stdHash.add(numbers[i]);
+            table.add(numbers[i]);
+        }
+
+        //Act
+        for (int i : table) {
+            assertTrue(stdHash.contains(i), "The iterator should iterate through all added elements, current: " + i);
+            stdHash.remove(i);
+        }
+
+        //Assert
+        assertTrue(stdHash.isEmpty(), "The iterator should have iterated through all elements!");
     }
     
     @Test
@@ -275,7 +277,100 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     	//Act, Assert
     	assertFalse(it.hasNext());
     }
-    
+
+
+    @Test
+    void reverseIterator_AddNumbers_IteratorGoesThroughAllOfThem() {
+        //Arrange
+        HashSet<Integer> stdHash = new HashSet<Integer>();
+        int[] numbers = {1, 2, 3, 4, 5, 3};
+
+        for (int i=0; i<numbers.length; ++i) {
+            stdHash.add(numbers[i]);
+            table.add(numbers[i]);
+        }
+
+        ReverseIterator it = table.reverseIterator();
+        int curr;
+
+        //Act
+        while (it.hasPrevious()) {
+            curr = it.previous();
+            assertTrue(stdHash.contains(curr),
+                    "The iterator should iterate through all added elements, current: " + curr);
+            stdHash.remove(curr);
+        }
+        //Assert
+        assertTrue(stdHash.isEmpty(), "The iterator should have iterated through all elements!");
+    }
+
+    @Test
+    void reverseIteratorRemove_CallRemoveWithoutCallingPrevious_ExceptionIsThrown() {
+        //Arrange
+        fill (1, 5, 1);
+        ReverseIterator it = table.reverseIterator();
+
+        //Act, Assert
+        assertThrows(IllegalStateException.class, it::remove,
+                "Without calling previous, the iterator must not be able to remove anything.");
+    }
+
+    @Test
+    void reverseIteratorRemove_RemoveANumber_SizeIsDecreased() {
+        //Arrange
+        fill (1, 5, 1);
+        ReverseIterator it = table.reverseIterator();
+        it.previous();
+
+        //Act
+        it.remove();
+
+        //Assert
+        assertEquals(4, table.size(), "After removal, size must be decreased.");
+    }
+
+    @Test
+    void reverseIteratorNext_callPreviousWhenThereIsNoPrevious_ExceptionIsThrown() {
+        //Arrange
+        fill (1, 5, 1);
+        ReverseIterator it = table.reverseIterator();
+        for (int i=0; i<5; ++i) {
+            it.previous();
+        }
+
+        //Act, Assert
+        assertThrows(NoSuchElementException.class, () -> it.previous(),
+                "Call to previous when beginning is reached throws an error");
+    }
+
+    @Test
+    void reverseIteratorHasPrevious_callHasPreviousWhenThereIsPrevious_ReturnTrue() {
+        //Arrange
+        fill (1, 5, 1);
+        ReverseIterator it = table.reverseIterator();
+        it.previous();
+
+        //Act, Assert
+        for (int i=0; i<4; ++i) {
+            assertTrue(it.hasPrevious(), "There must be previous!");
+            it.previous();
+        }
+    }
+
+    @Test
+    void reverseIteratorHasPrevious_callHasPreviousWhenThereIsNoPrevious_ReturnFalse() {
+        //Arrange
+        fill (1, 5, 1);
+        ReverseIterator it = table.reverseIterator();
+        for (int i=0; i<5; ++i) {
+            it.previous();
+        }
+
+        //Act, Assert
+        assertFalse(it.hasPrevious());
+    }
+
+
     private void fill(int from, int to, int step) {
     	for (int i=from; i<=to; i += step) {
     		table.add(i);

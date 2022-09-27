@@ -348,15 +348,15 @@ public class LinearProbingHashTable extends AbstractHashTable {
     }
 
     private class LPHashReverseIterator implements ReverseIterator {
-        int elementsBeforeIndex;
+        int elementsAfterIndex;
         int index;
         int lastReturned;
         int lastModCount;
 
         public LPHashReverseIterator() {
             lastModCount = LinearProbingHashTable.this.modCount;
-            elementsBeforeIndex = 0;
-            index = -1;
+            elementsAfterIndex = 0;
+            index = LinearProbingHashTable.this.table.length;
             lastReturned = -1;
         }
 
@@ -370,7 +370,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
         @Override
         public boolean hasPrevious() {
             checkWhetherModCountHasNotChanged();
-            return index >= 0;
+            return elementsAfterIndex < size;
         }
 
         /**
@@ -388,8 +388,9 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
 
             moveIndexToPreviousElement();
+            ++elementsAfterIndex;
             lastReturned = index;
-            return LinearProbingHashTable.this.table[index--].getValue();
+            return LinearProbingHashTable.this.table[index].getValue();
         }
 
         /**
@@ -417,7 +418,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
             }
 
             LinearProbingHashTable.this.remove(LinearProbingHashTable.this.table[lastReturned].getValue());
-            --elementsBeforeIndex;
+            --elementsAfterIndex;
 
             lastModCount = LinearProbingHashTable.this.modCount;
             lastReturned = -1;
@@ -464,7 +465,6 @@ public class LinearProbingHashTable extends AbstractHashTable {
             for (int i = index - 1; i >= 0; --i) {
                 if (isNodeValid(LinearProbingHashTable.this.table[i])) {
                     index = i;
-                    --elementsBeforeIndex;
                     return;
                 }
             }

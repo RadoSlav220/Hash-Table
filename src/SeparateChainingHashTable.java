@@ -317,7 +317,7 @@ public class SeparateChainingHashTable extends AbstractHashTable {
 
 
     private class SCHashReverseIterator implements ReverseIterator {
-        int elementsBeforeIndex;
+        int elementsAfterIndex;
         int index;
         private Iterator<Integer> listIterator;
         Integer lastReturned;
@@ -325,7 +325,7 @@ public class SeparateChainingHashTable extends AbstractHashTable {
 
         public SCHashReverseIterator() {
             lastModCount = SeparateChainingHashTable.this.modCount;
-            elementsBeforeIndex = 0;
+            elementsAfterIndex = 0;
             index = SeparateChainingHashTable.this.table.length;
             lastReturned = null;
         }
@@ -340,7 +340,7 @@ public class SeparateChainingHashTable extends AbstractHashTable {
         @Override
         public boolean hasPrevious() {
             checkWhetherModCountHasNotChanged();
-            return index >= 0;
+            return elementsAfterIndex < size;
         }
 
         /**
@@ -358,7 +358,7 @@ public class SeparateChainingHashTable extends AbstractHashTable {
 
 
             moveToPrevious();
-            ++elementsBeforeIndex;
+            ++elementsAfterIndex;
             lastReturned = listIterator.next();
             return lastReturned;
         }
@@ -383,12 +383,12 @@ public class SeparateChainingHashTable extends AbstractHashTable {
         public void remove() {
             checkWhetherModCountHasNotChanged();
 
-            if (lastReturned < 0) {
+            if (lastReturned == null) {
                 throw new IllegalStateException("Next wasn't called or remove was already called after the last next");
             }
 
             SeparateChainingHashTable.this.remove(lastReturned);
-            --elementsBeforeIndex;
+            --elementsAfterIndex;
 
             lastModCount = SeparateChainingHashTable.this.modCount;
             lastReturned = null;
@@ -441,7 +441,6 @@ public class SeparateChainingHashTable extends AbstractHashTable {
                 temp = SeparateChainingHashTable.this.table[i].getList().iterator();
                 if (temp.hasNext()) {
                     index = i;
-                    --elementsBeforeIndex;
                     listIterator = temp;
                     return;
                 }
