@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
@@ -178,10 +178,8 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void remove_AddMillionNumbersRemoveOddNumbers_TableContainsOnlyEvenNumbers() {
         //Arrange
-        for (int i = 0; i < 1000000; ++i) {
-            table.add(i);
-        }
-
+    	fill(0, 999999, 1);
+        
         //Act
         for (int i = 1; i < 1000000; i += 2) {
             table.remove(i);
@@ -194,5 +192,81 @@ abstract class HashTableTest<T extends AbstractHashTable> {
             assertEquals(isEven, table.contains(i));
         }
     }
-
+    
+    @Test
+    void iterator_AddNumbers_IteratorGoesThroughAllOfThem() {
+    	//Arrange
+    	HashSet<Integer> stdHash = new HashSet<Integer>();
+    	int[] numbers = {1, 2, 3, 4, 5};
+    	for (int i=0; i<numbers.length; ++i) {
+    		stdHash.add(numbers[i]);
+    		table.add(numbers[i]);    		
+    	}
+    	
+    	//Act
+    	for (int i : table) {
+    		stdHash.remove(i);
+    	}
+    	
+    	//Assert
+    	assertTrue(stdHash.isEmpty());
+    }
+    
+    @Test
+    void iteratorRemove_RemoveANumber_SizeIsDecreased() {
+    	//Arrange
+    	fill (1, 5, 1);
+    	Iterator<Integer> it = table.iterator();
+    	
+    	//Act
+    	it.remove();
+    	
+    	//Assert
+    	assertEquals(4, table.size(), "After removal, size must be desreased.");
+    }
+    
+    @Test
+    void iteratorNext_callNextWhenThereIsNoNext_ExceptionIsThrown() {
+    	//Arrange
+    	fill (1, 5, 1);
+    	Iterator<Integer> it = table.iterator();
+    	for (int i=0; i<4; ++i) {
+    		it.next();
+    	}
+    	
+    	//Act, Assert
+    	assertThrows(NoSuchElementException.class, () -> it.next());
+    }
+    
+    @Test
+    void iteratorHasNext_callHasNextWhenThereIsNext_ReturnTrue() {
+    	//Arrange
+    	fill (1, 5, 1);
+    	Iterator<Integer> it = table.iterator();
+    	
+    	//Act, Assert
+    	for (int i=0; i<3; ++i) {
+    		assertTrue(it.hasNext());
+    		it.next();
+    	}
+    }
+    
+    @Test
+    void iteratorHasNext_callHasNextWhenThereIsNoNext_ReturnFalse() {
+    	//Arrange
+    	fill (1, 5, 1);
+    	Iterator<Integer> it = table.iterator();
+    	for (int i=0; i<3; ++i) {
+    		it.next();
+    	}
+    	
+    	//Act, Assert
+    	assertFalse(it.hasNext());
+    }
+    
+    private void fill(int from, int to, int step) {
+    	for (int i=from; i<=to; i += step) {
+    		table.add(i);
+    	}
+    }
 }

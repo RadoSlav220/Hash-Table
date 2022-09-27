@@ -47,18 +47,18 @@ public class SeparateChainingHashTable extends AbstractHashTable {
     	if (other == null) {
     		throw new IllegalArgumentException("Null argument passed");
     	}
-    	else if (other instanceof SeparateChainingHashTable) {
+    	else if (other instanceof SeparateChainingHashTable otherSC) {
     		Bucket[] tempRef = this.table;
-    		this.table = ((SeparateChainingHashTable) other).table;
-    		((SeparateChainingHashTable) other).table = tempRef;
+    		this.table = otherSC.table;
+    		otherSC.table = tempRef;
     		
     		int tempSize = this.size;
-    		this.size = ((SeparateChainingHashTable) other).size;
-    		((SeparateChainingHashTable) other).size = tempSize;
+    		this.size = otherSC.size;
+    		otherSC.size = tempSize;
     		
     		Function<Integer, Integer> tempHash = this.hash;
-    		this.hash = ((SeparateChainingHashTable) other).hash;
-    		((SeparateChainingHashTable) other).hash = tempHash;
+    		this.hash = otherSC.hash;
+    		otherSC.hash = tempHash;
     	}
     	else {
     		//to be written
