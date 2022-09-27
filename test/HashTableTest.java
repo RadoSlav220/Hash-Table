@@ -40,13 +40,11 @@ abstract class HashTableTest<T extends AbstractHashTable> {
 
     @Test
     void empty_aHashTableWithOneElement_emptyReturnsFalse() {
-    	System.out.println("Tuka tr da gledam: " + table.size());
-        //Arrange
+    	//Arrange
         table.add(3);
-        System.out.println("Tuka tr da gledam: " + table.size());
         
         //Act, Assert
-        assertFalse(table.empty(), "A hash table should be empty after creation!");
+        assertFalse(table.empty(), "A hash table should not be empty after addition!");
     }
 
     @Test

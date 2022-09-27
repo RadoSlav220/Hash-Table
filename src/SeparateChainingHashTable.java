@@ -8,7 +8,6 @@ public class SeparateChainingHashTable extends AbstractHashTable {
     public static double MIN_LOAD_FACTOR = 0.25;
     
 	private Bucket[] table;
-	private int size;
 	
 	public SeparateChainingHashTable() {
 		table = new Bucket[DEFAULT_CAPACITY];
@@ -62,14 +61,15 @@ public class SeparateChainingHashTable extends AbstractHashTable {
 
     @Override
     public boolean add(int value) {
-        if (this.contains(value)) {
-        	return false;
+    	if (this.contains(value)) {
+    		return false;
         }
         table[hash.apply(value) % table.length].add(value);
         ++size;
         if (checkResize()) {
         	resize(table.length * RESIZE_FACTOR);
         }
+       
         return true;
     }
 
@@ -99,13 +99,14 @@ public class SeparateChainingHashTable extends AbstractHashTable {
     
     private void resize(int newCapacity) {
     	Bucket[] newTable = new Bucket[newCapacity];
-    	System.out.println(size);
+    	for (int i=0; i<newCapacity; ++i) {
+    		newTable[i] = new Bucket();
+    	}
     	for (Bucket bucket : this.table) {
     		for (int element : bucket.getList()) {
     			newTable[hash.apply(element) % newCapacity].add(element);
     		}
     	}
-    	System.out.println(size);
     	table = newTable;
     }
     
