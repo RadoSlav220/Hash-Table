@@ -26,7 +26,45 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public void swap(HashTable other) {
-        throw new UnsupportedOperationException("not implemented");
+        if (other == null) {
+            throw new IllegalArgumentException("The argument is null!");
+        }
+        if (other instanceof LinearProbingHashTable linearOther) {
+            swap(linearOther);
+        }
+        else {
+            swapContent(other);
+        }
+    }
+
+    private void swap(LinearProbingHashTable other) {
+        Node[] temp = table;
+        Function<Integer, Integer> tempFunc = hash;
+        int tempSize = size;
+
+        table = other.table;
+        other.table = temp;
+
+        hash = other.hash;
+        other.hash = tempFunc;
+
+        size = other.size;
+        other.size = tempSize;
+    }
+
+    private void swapContent(HashTable other) {
+        LinearProbingHashTable temp = new LinearProbingHashTable();
+
+        for (Integer integer : other) {
+            temp.add(integer);
+        }
+
+        other.clear();
+        for (Integer integer : temp) {
+            other.add(integer);
+        }
+
+        swap(temp);
     }
 
     @Override

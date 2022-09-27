@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public interface HashTable {
+public interface HashTable extends Iterable<Integer> {
     /**
      * @return the number of elements stored in this hash table
      */
