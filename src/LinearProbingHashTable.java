@@ -29,7 +29,8 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("not implemented");
+        table = new Node[DEFAULT_CAPACITY];
+        size = 0;
     }
 
     @Override
