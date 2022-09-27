@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.function.Function;
 import java.util.LinkedList;
 
-public class SeparateChainingHashTable extends AbstractHashTable {
+public class SeparateChainingHashTable extends AbstractHashTable implements Iterable {
     
 	public static int DEFAULT_CAPACITY = 16;
 	public static double MAX_LOAD_FACTOR = 0.75;
@@ -40,7 +40,18 @@ public class SeparateChainingHashTable extends AbstractHashTable {
 
     @Override
     public void swap(HashTable other) {
-        throw new UnsupportedOperationException("not implemented");
+    	if (other instanceof SeparateChainingHashTable) {
+    		LinkedList<Integer>[] tempRef = this.table;
+    		this.table = ((SeparateChainingHashTable) other).table;
+    		((SeparateChainingHashTable) other).table = tempRef;
+    		
+    		int tempSize = ((SeparateChainingHashTable) other).size;
+    		this.size = tempSize;
+    		((SeparateChainingHashTable) other).size = tempSize;
+    	}
+    	else {
+    		//iterate
+    	}
     }
 
     @Override
@@ -72,9 +83,12 @@ public class SeparateChainingHashTable extends AbstractHashTable {
     @SuppressWarnings("unchecked")
 	private void resize(int newCapacity) {
     	LinkedList<Integer>[] newTable = (LinkedList<Integer>[]) new Object[newCapacity];
-    	//for (int i : this) {
-    	//	
-    	//}
+    	for (LinkedList<Integer> bucket : this.table) {
+    		for (int element : bucket) {
+    			newTable[hash.apply(element) % newCapacity].add(element);
+    		}
+    	}
+    	table = newTable;
     }
     
     private boolean checkResize() {
