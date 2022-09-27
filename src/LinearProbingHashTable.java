@@ -1,7 +1,5 @@
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -265,8 +263,8 @@ public class LinearProbingHashTable extends AbstractHashTable {
                 throw new NoSuchElementException("The iteration has no more elements");
             }
 
-            lastReturned = index;
             moveIndexToNextElement();
+            lastReturned = index;
             return LinearProbingHashTable.this.table[index].getValue();
         }
 
@@ -339,7 +337,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
         }
 
         private void moveIndexToNextElement() {
-            for (int i = index + 1; i < size; i++) {
+            for (int i = index + 1; i < table.length; i++) {
                 if (isNodeValid(LinearProbingHashTable.this.table[i])) {
                     index = i;
                     ++elementsBeforeIndex;
@@ -389,9 +387,9 @@ public class LinearProbingHashTable extends AbstractHashTable {
             }
             checkWhetherModCountHasNotChanged();
 
-            lastReturned = index;
 
             moveIndexToPreviousElement();
+            lastReturned = index;
             return LinearProbingHashTable.this.table[index--].getValue();
         }
 

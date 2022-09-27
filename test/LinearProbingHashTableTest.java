@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,4 +64,20 @@ class LinearProbingHashTableTest extends HashTableTest<LinearProbingHashTable> {
         assertEquals(table2.size(), 10);
     }
 
+
+    @Test
+    void iterator_forEachRemaining_doesNotChangeElements() {
+        //Arrange
+        LinearProbingHashTable table = new LinearProbingHashTable();
+        for (int i = 0; i < 10; i++) {
+            table.add(i);
+        }
+        Iterator<Integer> it = table.iterator();
+
+        //Act
+        it.forEachRemaining(e -> e = e + 1);
+
+        //Assert
+        assertFalse(table.contains(11));
+    }
 }
