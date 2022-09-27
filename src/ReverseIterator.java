@@ -35,7 +35,7 @@ public interface ReverseIterator {
      * after a call to the {@link #forEachRemaining forEachRemaining} method.
      *
      * @throws IllegalStateException if the {@code previous} method has not yet been called,
-     * or the remove method has already been called after the last call to the next method.
+     *                               or the remove method has already been called after the last call to the next method.
      */
     void remove();
 
@@ -55,9 +55,9 @@ public interface ReverseIterator {
      * exception.
      *
      * @param action The action to be performed for each element
-     * @throws NullPointerException if the specified action is null
+     * @throws NullPointerException            if the specified action is null
      * @throws ConcurrentModificationException There have been a structural modification made that
-     * might cause the current operation to give incorrect results.
+     *                                         might cause the current operation to give incorrect results.
      */
     void forEachRemaining(Consumer<? super Integer> action);
 }

@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -41,9 +42,9 @@ abstract class HashTableTest<T extends AbstractHashTable> {
 
     @Test
     void empty_aHashTableWithOneElement_emptyReturnsFalse() {
-    	//Arrange
+        //Arrange
         table.add(3);
-        
+
         //Act, Assert
         assertFalse(table.empty(), "A hash table should not be empty after addition!");
     }
@@ -138,7 +139,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
         Random random = new Random();
 
         //Act
-        while(numbers.size() < 1000000) {
+        while (numbers.size() < 1000000) {
             int num = random.nextInt();
             numbers.add(num);
             table.add(num);
@@ -168,7 +169,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void remove_ValueNotInTable_NoChange() {
         //Act
-    	boolean hasChanged = table.remove(3);
+        boolean hasChanged = table.remove(3);
 
         //Assert
         assertFalse(hasChanged);
@@ -178,8 +179,8 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void remove_AddMillionNumbersRemoveOddNumbers_TableContainsOnlyEvenNumbers() {
         //Arrange
-    	fill(0, 999999, 1);
-        
+        fill(0, 999999, 1);
+
         //Act
         for (int i = 1; i < 1000000; i += 2) {
             table.remove(i);
@@ -192,14 +193,14 @@ abstract class HashTableTest<T extends AbstractHashTable> {
             assertEquals(isEven, table.contains(i));
         }
     }
-    
+
     @Test
     void iterator_AddNumbers_IteratorGoesThroughAllOfThem() {
         //Arrange
         HashSet<Integer> stdHash = new HashSet<Integer>();
         int[] numbers = {1, 2, 3, 4, 5, 3};
 
-        for (int i=0; i<numbers.length; ++i) {
+        for (int i = 0; i < numbers.length; ++i) {
             stdHash.add(numbers[i]);
             table.add(numbers[i]);
         }
@@ -213,69 +214,69 @@ abstract class HashTableTest<T extends AbstractHashTable> {
         //Assert
         assertTrue(stdHash.isEmpty(), "The iterator should have iterated through all elements!");
     }
-    
+
     @Test
     void iteratorRemove_CallRemoveWithoutCallingNext_ExceptionIsThrown() {
-    	//Arrange
-    	fill (1, 5, 1);
-    	Iterator<Integer> it = table.iterator();
-    	
-    	//Act, Assert
-    	assertThrows(IllegalStateException.class, () -> it.remove(), "Without calling next, the iterator must not be able to remove anything.");
+        //Arrange
+        fill(1, 5, 1);
+        Iterator<Integer> it = table.iterator();
+
+        //Act, Assert
+        assertThrows(IllegalStateException.class, () -> it.remove(), "Without calling next, the iterator must not be able to remove anything.");
     }
-    
+
     @Test
     void iteratorRemove_RemoveANumber_SizeIsDecreased() {
-    	//Arrange
-    	fill (1, 5, 1);
-    	Iterator<Integer> it = table.iterator();
-    	it.next();
-    	
-    	//Act
-    	it.remove();
-    	
-    	//Assert
-    	assertEquals(4, table.size(), "After removal, size must be desreased.");
+        //Arrange
+        fill(1, 5, 1);
+        Iterator<Integer> it = table.iterator();
+        it.next();
+
+        //Act
+        it.remove();
+
+        //Assert
+        assertEquals(4, table.size(), "After removal, size must be desreased.");
     }
-    
+
     @Test
     void iteratorNext_callNextWhenThereIsNoNext_ExceptionIsThrown() {
-    	//Arrange
-    	fill (1, 5, 1);
-    	Iterator<Integer> it = table.iterator();
-    	for (int i=0; i<5; ++i) {
-    		it.next();
-    	}
-    	
-    	//Act, Assert
-    	assertThrows(NoSuchElementException.class, () -> it.next());
+        //Arrange
+        fill(1, 5, 1);
+        Iterator<Integer> it = table.iterator();
+        for (int i = 0; i < 5; ++i) {
+            it.next();
+        }
+
+        //Act, Assert
+        assertThrows(NoSuchElementException.class, () -> it.next());
     }
-    
+
     @Test
     void iteratorHasNext_callHasNextWhenThereIsNext_ReturnTrue() {
-    	//Arrange
-    	fill (1, 5, 1);
-    	Iterator<Integer> it = table.iterator();
-    	it.next();
-    	
-    	//Act, Assert
-    	for (int i=0; i<4; ++i) {
-    		assertTrue(it.hasNext(), "There must be next!");
-    		it.next();
-    	}
+        //Arrange
+        fill(1, 5, 1);
+        Iterator<Integer> it = table.iterator();
+        it.next();
+
+        //Act, Assert
+        for (int i = 0; i < 4; ++i) {
+            assertTrue(it.hasNext(), "There must be next!");
+            it.next();
+        }
     }
-    
+
     @Test
     void iteratorHasNext_callHasNextWhenThereIsNoNext_ReturnFalse() {
-    	//Arrange
-    	fill (1, 5, 1);
-    	Iterator<Integer> it = table.iterator();
-    	for (int i=0; i<5; ++i) {
-    		it.next();
-    	}
-    	
-    	//Act, Assert
-    	assertFalse(it.hasNext());
+        //Arrange
+        fill(1, 5, 1);
+        Iterator<Integer> it = table.iterator();
+        for (int i = 0; i < 5; ++i) {
+            it.next();
+        }
+
+        //Act, Assert
+        assertFalse(it.hasNext());
     }
 
 
@@ -285,7 +286,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
         HashSet<Integer> stdHash = new HashSet<Integer>();
         int[] numbers = {1, 2, 3, 4, 5, 3};
 
-        for (int i=0; i<numbers.length; ++i) {
+        for (int i = 0; i < numbers.length; ++i) {
             stdHash.add(numbers[i]);
             table.add(numbers[i]);
         }
@@ -307,7 +308,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void reverseIteratorRemove_CallRemoveWithoutCallingPrevious_ExceptionIsThrown() {
         //Arrange
-        fill (1, 5, 1);
+        fill(1, 5, 1);
         ReverseIterator it = table.reverseIterator();
 
         //Act, Assert
@@ -318,7 +319,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void reverseIteratorRemove_RemoveANumber_SizeIsDecreased() {
         //Arrange
-        fill (1, 5, 1);
+        fill(1, 5, 1);
         ReverseIterator it = table.reverseIterator();
         it.previous();
 
@@ -332,9 +333,9 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void reverseIteratorNext_callPreviousWhenThereIsNoPrevious_ExceptionIsThrown() {
         //Arrange
-        fill (1, 5, 1);
+        fill(1, 5, 1);
         ReverseIterator it = table.reverseIterator();
-        for (int i=0; i<5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             it.previous();
         }
 
@@ -346,12 +347,12 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void reverseIteratorHasPrevious_callHasPreviousWhenThereIsPrevious_ReturnTrue() {
         //Arrange
-        fill (1, 5, 1);
+        fill(1, 5, 1);
         ReverseIterator it = table.reverseIterator();
         it.previous();
 
         //Act, Assert
-        for (int i=0; i<4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             assertTrue(it.hasPrevious(), "There must be previous!");
             it.previous();
         }
@@ -360,9 +361,9 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void reverseIteratorHasPrevious_callHasPreviousWhenThereIsNoPrevious_ReturnFalse() {
         //Arrange
-        fill (1, 5, 1);
+        fill(1, 5, 1);
         ReverseIterator it = table.reverseIterator();
-        for (int i=0; i<5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             it.previous();
         }
 
@@ -372,8 +373,8 @@ abstract class HashTableTest<T extends AbstractHashTable> {
 
 
     private void fill(int from, int to, int step) {
-    	for (int i=from; i<=to; i += step) {
-    		table.add(i);
-    	}
+        for (int i = from; i <= to; i += step) {
+            table.add(i);
+        }
     }
 }

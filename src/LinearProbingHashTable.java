@@ -34,13 +34,12 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public void swap(HashTable other) {
-    	if (other == null) {
+        if (other == null) {
             throw new IllegalArgumentException("The argument is null!");
         }
         if (other instanceof LinearProbingHashTable linearOther) {
             swap(linearOther);
-        }
-        else {
+        } else {
             swapContent(other);
         }
     }
@@ -65,7 +64,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
     }
 
     private void swapContent(HashTable other) {
-    	LinearProbingHashTable temp = new LinearProbingHashTable();
+        LinearProbingHashTable temp = new LinearProbingHashTable();
 
         for (Integer integer : other) {
             temp.add(integer);
@@ -100,7 +99,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
     }
 
     private boolean checkResize() {
-        return ((double)size / table.length) >= MAX_LOAD_FACTOR;
+        return ((double) size / table.length) >= MAX_LOAD_FACTOR;
     }
 
     private void resize(int newCapacity) {
@@ -130,7 +129,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
     }
 
     private boolean checkShrink() {
-        return ((double)size / table.length) <= MIN_LOAD_FACTOR;
+        return ((double) size / table.length) <= MIN_LOAD_FACTOR;
     }
 
     private void removeValue(int index) {
@@ -282,7 +281,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
          * after a call to the {@link #forEachRemaining forEachRemaining} method.
          *
          * @throws IllegalStateException if the {@code next} method has not yet been called,
-         * or the remove method has already been called after the last call to the next method.
+         *                               or the remove method has already been called after the last call to the next method.
          */
         @Override
         public void remove() {
@@ -314,9 +313,9 @@ public class LinearProbingHashTable extends AbstractHashTable {
          * exception.
          *
          * @param action The action to be performed for each element
-         * @throws NullPointerException if the specified action is null
+         * @throws NullPointerException            if the specified action is null
          * @throws ConcurrentModificationException There have been a structural modification made that
-         * might cause the current operation to give incorrect results.
+         *                                         might cause the current operation to give incorrect results.
          */
         @Override
         public void forEachRemaining(Consumer<? super Integer> action) {

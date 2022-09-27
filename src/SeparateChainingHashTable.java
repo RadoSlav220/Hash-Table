@@ -168,7 +168,7 @@ public class SeparateChainingHashTable extends AbstractHashTable {
         Bucket[] newTable = getBuckets(newCapacity);
 
         for (Integer i : this) {
-        	newTable[hash.apply(i) % newCapacity].add(i);
+            newTable[hash.apply(i) % newCapacity].add(i);
         }
 
         table = newTable;
