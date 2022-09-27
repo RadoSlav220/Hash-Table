@@ -24,12 +24,12 @@ class HashFunctionsTest {
 	}
 	
 	@Test
-	void idHash_EqualElements_ShouldHaveSameHash() {
-		assertEquals(HashFunctions.idHash(12), HashFunctions.idHash(12));
+	void absHash_EqualElements_ShouldHaveSameHash() {
+		assertEquals(HashFunctions.absHash(12), HashFunctions.absHash(12));
 	}
 	
 	@Test
-	void idHash_DifferentElements_ShouldHaveDifferentHashes() {
-		assertNotEquals(HashFunctions.idHash(4), HashFunctions.idHash(5));
+	void absHash_DifferentElements_ShouldHaveDifferentHashes() {
+		assertNotEquals(HashFunctions.absHash(4), HashFunctions.absHash(5));
 	}
 }

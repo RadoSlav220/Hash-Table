@@ -12,7 +12,6 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     public LinearProbingHashTable() {
         table = new Node[DEFAULT_CAPACITY];
-        hash = HashFunctions::FNVhash;
     }
 
     public LinearProbingHashTable(Function<Integer, Integer> hashFunction) {

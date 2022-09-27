@@ -6,9 +6,13 @@ public abstract class AbstractHashTable implements HashTable {
 
     public AbstractHashTable() {
         size = 0;
-        hash = e -> Integer.hashCode(e);
+        hash = HashFunctions::customHash;
     }
 
+    /**
+     *
+     * @param hashFunction expects a function that returns a non-negative number
+     */
     public AbstractHashTable(Function<Integer, Integer> hashFunction) {
         size = 0;
         hash = hashFunction;

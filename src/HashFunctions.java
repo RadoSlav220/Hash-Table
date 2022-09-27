@@ -25,7 +25,7 @@ public class HashFunctions {
         return rv >= 0 ? rv : rv ^ 0x80000000;
     }
 	
-	public static int idHash(int x) {
-		return x;
+	public static int absHash(int x) {
+		return Math.abs(x);
 	}
 }
