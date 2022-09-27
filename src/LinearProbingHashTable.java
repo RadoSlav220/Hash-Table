@@ -33,7 +33,7 @@ public class LinearProbingHashTable extends AbstractHashTable {
 
     @Override
     public void swap(HashTable other) {
-        if (other == null) {
+    	if (other == null) {
             throw new IllegalArgumentException("The argument is null!");
         }
         if (other instanceof LinearProbingHashTable linearOther) {
@@ -64,14 +64,14 @@ public class LinearProbingHashTable extends AbstractHashTable {
     }
 
     private void swapContent(HashTable other) {
-        LinearProbingHashTable temp = new LinearProbingHashTable();
+    	LinearProbingHashTable temp = new LinearProbingHashTable();
 
         for (Integer integer : other) {
             temp.add(integer);
         }
 
         other.clear();
-        for (Integer integer : temp) {
+        for (Integer integer : this) {
             other.add(integer);
         }
 
