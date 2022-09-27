@@ -2,32 +2,35 @@ import java.util.Iterator;
 import java.util.function.Function;
 import java.util.LinkedList;
 
-public class SeparateChainingHashTable extends AbstractHashTable implements Iterable {
+public class SeparateChainingHashTable extends AbstractHashTable {
     
 	public static double MAX_LOAD_FACTOR = 0.75;
     public static double MIN_LOAD_FACTOR = 0.25;
     
-	private LinkedList<Integer>[] table;
+	private Bucket[] table;
 	private int size;
 	
-	@SuppressWarnings("unchecked")
 	public SeparateChainingHashTable() {
-		table = (LinkedList<Integer>[]) new Object[DEFAULT_CAPACITY];
+		table = new Bucket[DEFAULT_CAPACITY];
+		for (int i=0; i<DEFAULT_CAPACITY; ++i) {
+			table[i] = new Bucket();
+		}
 		hash = HashFunctions::FNVhash;
     }
 
-	@SuppressWarnings("unchecked")
 	public SeparateChainingHashTable(Function<Integer, Integer> hashFunction) {
         super(hashFunction);
-        table = (LinkedList<Integer>[]) new Object[DEFAULT_CAPACITY];
-    }
+        table = new Bucket[DEFAULT_CAPACITY];
+        for (int i=0; i<DEFAULT_CAPACITY; ++i) {
+			table[i] = new Bucket();
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public void clear() {
-    	LinkedList<Integer>[] temp;
+    	Bucket[] temp;
     	try {
-    		temp = (LinkedList<Integer>[]) new Object[table.length];
+    		temp = new Bucket[table.length];
     		table = temp;
     	} catch (OutOfMemoryError e) {
     		for (int i=0; i<table.length; ++i) {
@@ -40,7 +43,7 @@ public class SeparateChainingHashTable extends AbstractHashTable implements Iter
     @Override
     public void swap(HashTable other) {
     	if (other instanceof SeparateChainingHashTable) {
-    		LinkedList<Integer>[] tempRef = this.table;
+    		Bucket[] tempRef = this.table;
     		this.table = ((SeparateChainingHashTable) other).table;
     		((SeparateChainingHashTable) other).table = tempRef;
     		
@@ -85,13 +88,8 @@ public class SeparateChainingHashTable extends AbstractHashTable implements Iter
 
     @Override
     public boolean contains(int value) {
-    	LinkedList<Integer> bucket = table[hash.apply(value) % table.length];
-    	for (int i : bucket) {
-    		if (i == value) {
-    			return true;
-    		}
-    	}
-    	return false;
+    	Bucket bucket = table[hash.apply(value) % table.length];
+    	return bucket.contains(value); 
     }
 
     @Override
@@ -99,14 +97,15 @@ public class SeparateChainingHashTable extends AbstractHashTable implements Iter
         throw new UnsupportedOperationException("not implemented");
     }
     
-    @SuppressWarnings("unchecked")
-	private void resize(int newCapacity) {
-    	LinkedList<Integer>[] newTable = (LinkedList<Integer>[]) new Object[newCapacity];
-    	for (LinkedList<Integer> bucket : this.table) {
-    		for (int element : bucket) {
+    private void resize(int newCapacity) {
+    	Bucket[] newTable = new Bucket[newCapacity];
+    	System.out.println(size);
+    	for (Bucket bucket : this.table) {
+    		for (int element : bucket.getList()) {
     			newTable[hash.apply(element) % newCapacity].add(element);
     		}
     	}
+    	System.out.println(size);
     	table = newTable;
     }
     
@@ -116,5 +115,29 @@ public class SeparateChainingHashTable extends AbstractHashTable implements Iter
     
     private boolean checkShrink() {
         return ((double)size / table.length) <= MIN_LOAD_FACTOR;
+    }
+    
+    private class Bucket {
+    	private LinkedList<Integer> bucket;
+    	
+    	public Bucket() {
+    		bucket = new LinkedList<Integer>();
+    	}
+    	
+    	public LinkedList<Integer> getList() {
+    		return bucket;
+    	}
+    	
+    	public boolean add(Integer newElement) {
+    		return bucket.add(newElement);
+    	}
+    	
+    	public boolean remove(Integer element) {
+    		return bucket.remove(element);
+    	}
+    	
+    	public boolean contains(Integer element) {
+    		return bucket.contains(element);
+    	}
     }
 }
