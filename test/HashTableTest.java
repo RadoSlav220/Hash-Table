@@ -40,11 +40,11 @@ abstract class HashTableTest<T extends AbstractHashTable> {
 
     @Test
     void empty_aHashTableWithOneElement_emptyReturnsFalse() {
-        //Arrange
+    	//Arrange
         table.add(3);
-
+        
         //Act, Assert
-        assertFalse(table.empty(), "A hash table should be empty after creation!");
+        assertFalse(table.empty(), "A hash table should not be empty after addition!");
     }
 
     @Test
@@ -167,7 +167,7 @@ abstract class HashTableTest<T extends AbstractHashTable> {
     @Test
     void remove_ValueNotInTable_NoChange() {
         //Act
-        boolean hasChanged = table.remove(3);
+    	boolean hasChanged = table.remove(3);
 
         //Assert
         assertFalse(hasChanged);
