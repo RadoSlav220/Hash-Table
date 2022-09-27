@@ -52,4 +52,9 @@ public interface HashTable extends Iterable<Integer> {
      * @return Returns an iterator over the elements contained in this hash table
      */
     Iterator<Integer> iterator();
+
+    /**
+     * @return Returns a reverse iterator, iterating the elements of the hashmap in reverse order
+     */
+    ReverseIterator reverseIterator();
 }

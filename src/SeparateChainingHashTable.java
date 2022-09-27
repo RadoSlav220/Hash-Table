@@ -102,8 +102,16 @@ public class SeparateChainingHashTable extends AbstractHashTable {
     public Iterator<Integer> iterator() {
         throw new UnsupportedOperationException("not implemented");
     }
-    
-    private void resize(int newCapacity) {
+
+	/**
+	 * @return Returns a reverse iterator, iterating the elements of the hashmap in reverse order
+	 */
+	@Override
+	public ReverseIterator reverseIterator() {
+		return null;
+	}
+
+	private void resize(int newCapacity) {
     	Bucket[] newTable = new Bucket[newCapacity];
     	for (int i=0; i<newCapacity; ++i) {
     		newTable[i] = new Bucket();
